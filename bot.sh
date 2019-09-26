@@ -14,8 +14,8 @@ ShellBot.username
 
 
 function help () {
-	msg="Olá *${callback_query_from_username[$id]}* , em que posso ajudar?\n"
-    	msg+="Para maiores informaçoes sobre os comandos favor digitar ou clikar em /comandos."
+	msg="Salve *${callback_query_from_username[$id]}* , bora fazer um recon??\n"
+    	msg+="Da uma olhada nas info em  /comandos."
 		ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
                                                                   --text "Help"
    		ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
@@ -65,11 +65,9 @@ do
 	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
 
 	(
-    # Se o texto é um comando válido.
   	if [ "$message_text" = "/help" ]; then
-        	 # Envia mensagem para o chat com o texto especificado.
-        	 msg="Olá *$message_from_username* , em que posso ajudar?\n"
-       	 	 msg+="Para maiores informaçoes sobre os comandos favor digitar ou clikar em /comandos."
+        	 msg="Salve *$message_from_username* , Bora fazer um recon ?\n"
+       	 	 msg+="Da uma olhada nas info em  /comandos."
        		 ShellBot.sendMessage --chat_id $message_chat_id --text "$(echo -e $msg)" --parse_mode markdown
     	fi
 	if [[ "$message_text" = "/kill "*  ]]; then 
