@@ -1,9 +1,8 @@
 #!/bin/bash
-# bot.sh
 
-# Importando API
 source ShellBot.sh
-# Inicializa o BOT
+
+
 ShellBot.init --token $token 
 ShellBot.username
 
@@ -14,12 +13,12 @@ ShellBot.username
 #|_|    \___/|_| \_|\____\___/|_____|____/ 
 
 
-function Ajuda () {
+function help () {
 	msg="Olá *${callback_query_from_username[$id]}* , em que posso ajudar?\n"
     	msg+="Para maiores informaçoes sobre os comandos favor digitar ou clikar em /comandos."
 		ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-                                                                  --text "Ajuda"
-   		 ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
+                                                                  --text "Help"
+   		ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
                  		                                  --text "$(echo -e $msg)" \
                                 	 	                  --parse_mode markdown
 	}
@@ -33,9 +32,9 @@ function comandos () {
 	}
 
 unset botao
-ShellBot.InlineKeyboardButton --button 'botao' --line 1 --text 'Ajuda'  	--callback_data 'btn_help'      	# valor: btn_help
+ShellBot.InlineKeyboardButton --button 'botao' --line 1 --text 'Help'  	--callback_data 'btn_help'      	# valor: btn_help
 ShellBot.InlineKeyboardButton --button 'botao' --line 2 --text 'COMANDOS' 	--callback_data 'btn_comandos'    	# varor: btn_about
-ShellBot.regHandleFunction    --function Ajuda			 		--callback_data btn_help
+ShellBot.regHandleFunction    --function help			 		--callback_data btn_help
 ShellBot.regHandleFunction    --function comandos 	 		 	--callback_data btn_comandos
 
 
@@ -104,7 +103,7 @@ do
 	fi
 	if [ "$message_text" = "/dorks" ]; then 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Lista TOP DORKS"   
-		dorks_result=$(cat dork.list)
+		dorks_result=$(cat dorks.list)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$dorks_result"  
 	fi
 	if [ "$message_text" = "/comandos" ]; then
