@@ -86,7 +86,7 @@ do
 	if [[ "$message_text" = "/theharvester "*  ]]; then 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $message_text Aguarde =)"   
-		theharvester_result=$(theharvester $message_text)
+		theharvester_result=$(theharvester -d $message_text -l 100 -b google)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
 	fi
 	if [[ "$message_text" = "/inurl "*  ]]; then 
