@@ -2,7 +2,6 @@
 
 source ShellBot.sh
 
-
 ShellBot.init --token $token 
 ShellBot.username
 
@@ -113,7 +112,7 @@ do
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$whois_result"  
 	fi
 	if [ "$message_text" = "/whois"  ]; then 
-		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing WHOIS- Target $(cat $target) Aguarde =)"   
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing WHOIS- Target $target Aguarde =)"   
 		whois_result=$(whois $target)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$whois_result"  
 	fi
