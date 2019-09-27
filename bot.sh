@@ -52,6 +52,9 @@ botao1='[
 ["/dorks","/admin"]
 ]'
 
+target_file='/tmp/${message_chat_id[$id]}.target'
+target=$(cat $target_file)
+
 keyboard2="$(ShellBot.ReplyKeyboardMarkup --button 'botao1' --one_time_keyboard true)"
 
 while :
@@ -81,10 +84,20 @@ do
 		nmap_result=$(nmap $message_text)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$nmap_result"  
 	fi
+	if [ "$message_text" = "/nmap"  ]; then 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing NMAP - Target $(cat $target) Aguarde =)"   
+		nmap_result=$(nmap $target)
+		ShellBot.sendMessage --chat_id $message_chat_id --text "$nmap_result"  
+	fi
 	if [[ "$message_text" = "/theharvester "*  ]]; then 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $message_text Aguarde =)"   
 		theharvester_result=$(theharvester -d $message_text -l 100 -b google)
+		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
+	fi
+	if [ "$message_text" = "/theharvester"  ]; then 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $(cat $target) Aguarde =)"   
+		theharvester_result=$(theharvester -d  $target -l 100 -b google)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
 	fi
 	if [[ "$message_text" = "/inurl "*  ]]; then 
@@ -97,6 +110,11 @@ do
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "WHOIS - $message_text Aguarde =)"   
 		whois_result=$(whois $message_text)
+		ShellBot.sendMessage --chat_id $message_chat_id --text "$whois_result"  
+	fi
+	if [ "$message_text" = "/whois"  ]; then 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing WHOIS- Target $(cat $target) Aguarde =)"   
+		whois_result=$(whois $target)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$whois_result"  
 	fi
 	if [ "$message_text" = "/dorks" ]; then 
@@ -132,6 +150,13 @@ do
 		ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "Lista de atalhos" \
                                                              --reply_markup "$keyboard2" \
                                                              --parse_mode markdown
+	fi
+	if [[ "$message_text" = "/set-target "*  ]]; then 
+		echo $message_text | awk '{print $2}' > $target_file 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target)"   
+	fi
+	if [ "$message_text" = "/show-target"  ]; then 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $(cat $target)"   
 	fi
 	) &
 	done
