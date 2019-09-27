@@ -52,7 +52,6 @@ botao1='[
 ]'
 
 target_file='/tmp/${message_chat_id[$id]}.target'
-target=$(cat $target_file)
 
 keyboard2="$(ShellBot.ReplyKeyboardMarkup --button 'botao1' --one_time_keyboard true)"
 
@@ -65,6 +64,7 @@ do
     do
 
 	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
+        target=$(cat $target_file)
 
 	(
   	if [ "$message_text" = "/help" ]; then
@@ -154,7 +154,7 @@ do
 	fi
 	if [[ "$message_text" = "/set-target "*  ]]; then 
 		echo $message_text | awk '{print $2}' > /tmp/${message_chat_id[$id]}.target
-		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target)"   
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $(cat /tmp/${message_chat_id[$id]}.target)"   
 	fi
 	if [ "$message_text" = "/show-target"  ]; then 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target"   
