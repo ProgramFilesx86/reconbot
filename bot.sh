@@ -84,7 +84,7 @@ do
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$nmap_result"  
 	fi
 	if [ "$message_text" = "/nmap"  ]; then 
-		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing NMAP - Target $(cat $target) Aguarde =)"   
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Executing NMAP - Target $target Aguarde =)"   
 		nmap_result=$(nmap $target)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$nmap_result"  
 	fi
@@ -95,7 +95,7 @@ do
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
 	fi
 	if [ "$message_text" = "/theharvester"  ]; then 
-		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $(cat $target) Aguarde =)"   
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $target Aguarde =)"   
 		theharvester_result=$(theharvester -d  $target -l 100 -b google)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
 	fi
@@ -153,11 +153,11 @@ do
                                                              --parse_mode markdown
 	fi
 	if [[ "$message_text" = "/set-target "*  ]]; then 
-		echo $message_text | awk '{print $2}' > $target_file 
+		echo $message_text | awk '{print $2}' > /tmp/${message_chat_id[$id]}.target
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target)"   
 	fi
 	if [ "$message_text" = "/show-target"  ]; then 
-		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $(cat $target)"   
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target"   
 	fi
 	) &
 	done
