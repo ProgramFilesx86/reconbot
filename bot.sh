@@ -130,6 +130,8 @@ do
 										  /theharvester  - \\n	\
 										  /botoes - \\n		\
 										  /botoes2 - \\n	\
+										  /set-target - \\n	\
+										  /show-target - \\n	\
 										  )"
 	fi	
 	if [ "$message_text" = "/botoes" ]; then
