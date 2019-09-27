@@ -51,8 +51,6 @@ botao1='[
 ["/dorks","/admin"]
 ]'
 
-target_file='/tmp/${message_chat_id[$id]}.target'
-
 keyboard2="$(ShellBot.ReplyKeyboardMarkup --button 'botao1' --one_time_keyboard true)"
 
 while :
@@ -64,7 +62,7 @@ do
     do
 
 	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
-        target=$(cat $target_file)
+        target=$(cat /tmp/${message_chat_id[$id]}.target)
 
 	(
   	if [ "$message_text" = "/help" ]; then
