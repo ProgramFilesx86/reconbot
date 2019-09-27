@@ -157,6 +157,23 @@ do
 	if [ "$message_text" = "/show-target"  ]; then 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target = $target"   
 	fi
+	if [ "$message_text" = "/advanced"  ]; then 
+		ShellBot.sendMessage --chat_id $message_chat_id --text "Qual comando vc deseja add args ?"
+		if [[ ${message_reply_to_message_message_id[$id]} ]]; then
+			case ${message_reply_to_message_text[$id]} in
+				'nmap')
+				ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
+							--text 'NMAP' \
+							--reply_markup "$(ShellBot.ForceReply)"
+				;;
+				'theharvester')
+				ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
+							--text 'HARVESTER' \
+							--reply_markup "$(ShellBot.ForceReply)"
+				;;
+			esac
+		fi
+	fi
 	) &
 	done
 done
