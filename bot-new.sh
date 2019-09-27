@@ -11,37 +11,6 @@ ShellBot.username
 #|  _| | |_| | |\  | |__| |_| | |___ ___) |
 #|_|    \___/|_| \_|\____\___/|_____|____/ 
 
-
-function help () {
-	msg="Salve *${callback_query_from_username[$id]}* , bora fazer um recon??\n"
-    	msg+="Da uma olhada nas info em  /comandos."
-		ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-                                                                  --text "Help"
-   		ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-                 		                                  --text "$(echo -e $msg)" \
-                                	 	                  --parse_mode markdown
-	}
-
-function comandos () { 
-	ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-                                                     --text "status"
-    	ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-                                                     --text "$(echo -e /ip\\n/KILL\\n/status\\n/memoria\\n/lista\\n/idle\\n/botoes)"\
-                                                     --parse_mode markdown
-	}
-
-#unset botao
-#ShellBot.InlineKeyboardButton --button 'botao' --line 1 --text 'Help'  	--callback_data 'btn_help'      	# valor: btn_help
-#ShellBot.InlineKeyboardButton --button 'botao' --line 2 --text 'COMANDOS' 	--callback_data 'btn_comandos'    	# varor: btn_about
-#ShellBot.regHandleFunction    --function help			 		--callback_data btn_help
-#ShellBot.regHandleFunction    --function comandos 	 		 	--callback_data btn_comandos
-
-
-#unset keyboard1
-# Cria o objeto inline_keyboard contendo os elementos armazenados na variável 'botao1'
-# É retornada a nova estrutura e armazena em 'keyboard1'.
-#keyboard1="$(ShellBot.InlineKeyboardMarkup -b 'botao')"
-
 unset botao1
 
 botao1='[
@@ -164,7 +133,6 @@ do
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Qual comando vc deseja add args ?"
 		;;
 	esac
-
 		if [[ ${message_reply_to_message_message_id[$id]} ]]; then
 			case ${message_reply_to_message_text[$id]} in
 				'nmap')
