@@ -73,7 +73,7 @@ do
        	 	 msg+="Da uma olhada nas info em  /comandos."
        		 ShellBot.sendMessage --chat_id $message_chat_id --text "$(echo -e $msg)" --parse_mode markdown
 		;;
-		'/kill')
+		'/kill *')
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$message_text"   
 		ShellBot.sendMessage --chat_id $message_chat_id --text "PID $message_text Finalizado"  
@@ -89,7 +89,7 @@ do
 		nmap_result=$(nmap $target)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$nmap_result"  
 		;;
-		'/theharvester') 
+		'/theharvester *') 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Target - $message_text Aguarde =)"   
 		theharvester_result=$(theharvester -d $message_text -l 100 -b google)
@@ -100,13 +100,13 @@ do
 		theharvester_result=$(theharvester -d  $target -l 100 -b google)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$theharvester_result"  
 		;;
-		'/inurl')
+		'/inurl *')
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "Dork - $message_text Aguarde =)"   
 		inurl_result=$(inurl $message_text)
 		ShellBot.sendMessage --chat_id $message_chat_id --text "$inurl_result"  
 		;;
-		'/whois') 
+		'/whois *') 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage --chat_id $message_chat_id --text "WHOIS - $message_text Aguarde =)"   
 		whois_result=$(whois $message_text)
