@@ -14,10 +14,10 @@ ShellBot.username
 unset botao
 
 botao='
-["/help","/nmap","/inurl"],
-["/theharvester","/kill","/whois"],
-["/botoes","/botoes2","/comandos"],
-["/dorks","/admin"]
+["/set-targert","/nmap","/inurl"],
+["/theharvester","/shodan","/whois"],
+["karma","/sherlok","/pwnedornot"],
+["/dorks","/admin","/comandos","/show-target"]
 '
 
 keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'botao' --one_time_keyboard true)"
@@ -45,15 +45,7 @@ do
 					--parse_mode markdown
 		;;
 
-		"/kill"*)
-		message_text=$(echo "$message_text" | awk '{print $2}') 
-		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "$message_text"   
-		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "PID $message_text Finalizado"  
-		;;
-
-		"/nmap"*) 
+		"/nmap "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Target - $message_text Aguarde =)"   
@@ -70,7 +62,7 @@ do
 					--text "$nmap_result"  
 		;;
 
-		"/theharvester"*) 
+		"/theharvester "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Target - $message_text Aguarde =)"   
@@ -87,7 +79,7 @@ do
 					--text "$theharvester_result"  
 		;;
 
-		"/inurl"*)
+		"/inurl "*)
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Dork - $message_text Aguarde =)"   
@@ -96,7 +88,7 @@ do
 					--text "$inurl_result"  
 		;;
 
-		"/whois"*) 
+		"/whois "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "WHOIS - $message_text Aguarde =)"   
@@ -112,6 +104,73 @@ do
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$whois_result"  
 		;;
+
+		'/shodan')
+		shodan init $shodan_key
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing Shodan- $target Aguarde =)"   
+		shodan_result=$(shodan host $target)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$shodan_result"  
+		;;
+
+		"/shodan "*)
+		shodan init $shodan_key
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing Shodan $message_text Aguarde =)"   
+		shodan_result=$(shodan host $message_text)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$shodan_result"  
+		;;
+
+		'/karma')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing Karma - $target_p Aguarde =)"   
+		karma_result=$(karma target $target)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$karma_result"  
+		;;
+
+		"/karma "*)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing Karma - $message_text Aguarde =)"   
+		karma_result=$(karma target $message_text)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$karma_result"  
+		;;
+
+		'/sherlock')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing sherlock - $target_p Aguarde =)"   
+		sherlock_result=$(sherlock $target)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$sherlock_result"  
+		;;
+
+		"/sherlock "*)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing sherlock - $message_text Aguarde =)"   
+		sherlock_result=$(sherlock $message_text)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$sherlock_result"  
+		;;
+
+		'/pwnedornot')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing pwnedornot - $target_p Aguarde =)"   
+		pwnedornot_result=$(pwnedornot.py -e $target)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$pwnedornot_result"  
+		;;
+
+		"/pwnedornot "*)	
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing pwnedornot - $message_text Aguarde =)"   
+		pwnedornot_result=$(pwnedornot.py -e $message_text)
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "$pwnedornot_result"  
+		;;
+
 
 		'/dorks')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
