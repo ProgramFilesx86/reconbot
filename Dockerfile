@@ -9,7 +9,8 @@ RUN apt update && \
     apt install -y \
     python3 \
     python3-pip \
-    git
+    git \
+    tor
 
 #------------------------------------------------------------------
 # Python requirements
@@ -27,6 +28,10 @@ RUN git clone https://github.com/thewhiteh4t/pwnedOrNot.git && \
     ln -s $PWD/pwnedornot.py /usr/bin/pwnedornot
 
 #------------------------------------------------------------------
-# 
+# Install Karma
 #------------------------------------------------------------------
 
+RUN git clone https://github.com/decoxviii/karma && \
+    cd karma && \
+    python setup.py build && \
+    python setup.py install
