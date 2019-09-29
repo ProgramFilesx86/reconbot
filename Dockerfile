@@ -10,7 +10,7 @@ RUN apt update && \
     python3-pip \
     git \
     tor \
-    nmap \
+    nmap 
     
 #------------------------------------------------------------------
 # Python requirements
@@ -43,4 +43,12 @@ RUN git clone https://github.com/decoxviii/karma && \
 RUN git clone https://github.com/sherlock-project/sherlock.git && \
     cd sherlock && \
     ln -s $PWD/sherlock.py /usr/bin/sherlock
+
+#------------------------------------------------------------------
+# Install TheHarvester 
+#------------------------------------------------------------------
+
+RUN git clone https://github.com/laramies/theHarvester && \
+    cd theHarvester && \
+    ln -s $PWD/theHarvester.py /usr/bin/theHarvester.py
 
