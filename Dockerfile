@@ -10,7 +10,10 @@ RUN apt update && \
     python3 \
     python3-pip \
     git \
-    tor
+    tor \
+    nmap \
+    nikto \
+
 
 #------------------------------------------------------------------
 # Python requirements
@@ -33,5 +36,14 @@ RUN git clone https://github.com/thewhiteh4t/pwnedOrNot.git && \
 
 RUN git clone https://github.com/decoxviii/karma && \
     cd karma && \
-    python setup.py build && \
-    python setup.py install
+    python3 setup.py build && \
+    python3 setup.py install
+
+#------------------------------------------------------------------
+# Install Sherlock 
+#------------------------------------------------------------------
+
+RUN git clone https://github.com/sherlock-project/sherlock.git && \
+    cd sherlock && \
+    ln -s $PWD/sherlock.py /usr/bin/sherlock
+
