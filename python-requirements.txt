@@ -11,3 +11,16 @@ colorama
 certifi
 bs4
 beatifulsoup4
+aiodns
+beautifulsoup4
+censys
+dnspython
+flake8
+grequests
+mypy
+netaddr
+plotly
+pytest
+PyYaml
+shodan
+
