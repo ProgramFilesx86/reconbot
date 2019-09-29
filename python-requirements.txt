@@ -2,3 +2,12 @@ pysocks
 texttable
 docopt
 requests
+torrequests
+stem
+soupsieve
+requests-futures
+lxml
+colorama
+certifi
+bs4
+beatifulsoup4
