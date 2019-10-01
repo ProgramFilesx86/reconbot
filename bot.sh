@@ -20,7 +20,25 @@ botao='
 ["/dorks","/admin","/comandos","/show-target"]
 '
 
+btn_people='
+["/karma","/sherlok","/pwnedornot"]
+'
+btn_computer='
+["/nmap","/inurl","/theharvester"],
+["/shodan","/whois"] 
+'
+
+btn_target='["People 👨‍💻","Computer 🖥"]'
+
+btn_cleam='
+["Cleam Target - People"],
+["Cleam Target - Computer"],
+["Cleam All","Cleam Args"]
+'
+
 keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'botao' --one_time_keyboard true)"
+keyboard_computer="$(ShellBot.ReplyKeyboardMarkup --button 'btn_computer' --one_time_keyboard true)"
+keyboard_people="$(ShellBot.ReplyKeyboardMarkup --button 'btn_people' --one_time_keyboard true)"
 
 while :
 do
@@ -33,10 +51,20 @@ do
 	[[ ${message_chat_type[$id]} != private ]] && continue
 	mkdir /tmp/${message_from_id[$id]}
         target_dir=/tmp/${message_from_id[$id]}/target
+        target_dir_p=/tmp/${message_from_id[$id]}/target_people
         target=$(< $target_dir)
+	target_p=$(< $target_dir_p)
 	arg_nmap_dir=/tmp/${message_from_id[$id]}/nmap-agr
 	
 	case ${message_text[$id]} in
+		'/start')
+        	 msg="Salve *$message_from_username* , Bora fazer um recon ?\n"
+       	 	 msg+="Da uma olhada nas info em  /comandos."
+       		 ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+		 			--text "$(echo -e $msg)"		\
+					--parse_mode markdown
+		;;
+
 		'/help')
         	 msg="Salve *$message_from_username* , Bora fazer um recon ?\n"
        	 	 msg+="Da uma olhada nas info em  /comandos."
@@ -208,13 +236,26 @@ do
 		> log
 		;;
 
-		'/botoes')
+		'/btn-all')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Lista de atalhos" 		\
+					--text "All shortcuts" 		\
         				--reply_markup "$keyboard" 		\
 					--parse_mode markdown
 		;;
 
+		'/btn_people')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Shortcuts for peoples" 		\
+        				--reply_markup "$keyboard_people" 	\
+					--parse_mode markdown
+		;;
+
+		'/btn_computer')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Shortcurts for computer" 	\
+        				--reply_markup "$keyboard_computer" 	\
+					--parse_mode markdown
+		;;
 		'/advanced')
 		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 					--text "Qual comando quer ?" 		\
@@ -222,16 +263,79 @@ do
 		;;
 
 		'/set-target')
-		echo $message_text | awk '{print $2}' > $target_dir		
-		ShellBot.sendMessage 	--chat_id $message_chat_id 		\
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 				     	--text "Qual target ?"			\
-					--reply_markup "$(ShellBot.ForceReply)"
+					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_target')" \
 		;;
 
-		'/show-target')
-		ShellBot.sendMessage 	--chat_id $message_chat_id 		\
+		'/show-computer')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 				     	--text "Target = $target"
 		;;
+
+		'/show-people')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
+				     	--text "Target = $target_p"
+		;;
+
+		*"People 👨‍💻"*)
+		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
+					--text 'PEOPLE - Qual email ou Username? ' \
+					--reply_markup "$(ShellBot.ForceReply)"
+		unset btn_target 
+		;;
+
+		*"Computer 🖥"*)
+		ShellBot.sendMessage	--chat_id ${message_from_id[$id]}  	\
+					--text 'COMPUTER - Qual IP ou dominio? ' \
+					--reply_markup "$(ShellBot.ForceReply)"
+		unset btn_target 
+		;;
+
+		'/cleam')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+				     	--text "OQ quer limpar?"		\
+					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_cleam')" 
+		;;
+
+		'Cleam Target - People')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+				     	--text "Target People limpo"		\
+					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
+					--parse_mode markdown
+		> $target_dir_p
+
+		;;
+
+		'Cleam Target - Computer')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+				     	--text "Target Computer limpo"		\
+					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
+					--parse_mode markdown
+		> $target_dir
+		;;
+
+		'Cleam All')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+				     	--text "All clear"			\
+					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
+					--parse_mode markdown
+		> $target_dir_p
+		> $target_dir
+		> $arg_nmap_dir
+		;;
+
+		'Cleam Args')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+				     	--text "Args limpos"			\
+					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
+					--parse_mode markdown
+		> $arg_nmap_dir		
+		;;
+
+		/*)	
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
+				     	--text "Comando invalido ver em /comandos"
 
 	esac
 
@@ -259,6 +363,21 @@ do
 			echo $message_text > $target_dir
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 						--text "Target = $message_text" 	\
+			;;
+			'PEOPLE - Qual email ou Username?')
+			echo $message_text > $target_dir_p
+			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
+						--text "Target = $message_text" 	\
+        					--reply_markup "$keyboard_people" 	\
+						--parse_mode markdown
+			;;
+
+			'COMPUTER - Qual IP ou dominio?') 
+			echo $message_text > $target_dir
+			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
+						--text "Target = $message_text" 	\
+        					--reply_markup "$keyboard_computer" 	\
+						--parse_mode markdown
 			;;
 
 		esac
