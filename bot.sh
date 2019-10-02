@@ -11,9 +11,9 @@ ShellBot.username
 #|  _| | |_| | |\  | |__| |_| | |___ ___) |
 #|_|    \___/|_| \_|\____\___/|_____|____/ 
 
-unset botao
+unset btn_all 
 
-botao='
+btn_all='
 ["/set-targert","/nmap","/inurl"],
 ["/theharvester","/shodan","/whois"],
 ["karma","/sherlok","/pwnedornot"],
@@ -36,7 +36,7 @@ btn_cleam='
 ["Cleam All","Cleam Args"]
 '
 
-keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'botao' --one_time_keyboard true)"
+keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'btn_all' --one_time_keyboard true)"
 keyboard_computer="$(ShellBot.ReplyKeyboardMarkup --button 'btn_computer' --one_time_keyboard true)"
 keyboard_people="$(ShellBot.ReplyKeyboardMarkup --button 'btn_people' --one_time_keyboard true)"
 
@@ -58,12 +58,19 @@ do
 	
 	case ${message_text[$id]} in
 		'/start')
-        	 msg="Salve *$message_from_username* , Bora fazer um recon ?\n"
-       	 	 msg+="Da uma olhada nas info em  /comandos."
+        	 msg="Hi *$message_from_username* , Let's do a recon ? ?\n"
+       	 	 msg+="Your frist time ? Go to /readme"
        		 ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 		 			--text "$(echo -e $msg)"		\
 					--parse_mode markdown
 		;;
+		
+		'/readme')
+		msg=""
+                ShellBot.sendMessage   --chat_id ${message_from_id[$id]}       \
+                                        --text "$(echo -e $msg)"               \
+                                        --parse_mode markdown
+		;;	
 
 		'/help')
         	 msg="Salve *$message_from_username* , Bora fazer um recon ?\n"
@@ -154,9 +161,10 @@ do
 		'/karma')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Executing Karma - $target_p Aguarde =)"   
-		karma_result=$(karma target $target)
+		karma target $target_p > /tmp/karma.log
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "$karma_result"  
+					--text "\`\`\`$(cat /tmp/karma.log) \\n \`\`\`" \
+                                        --parse_mode markdown
 		;;
 
 		"/karma "*)
@@ -167,15 +175,16 @@ do
 					--text "$karma_result"  
 		;;
 
-		'/sherlock')
+		'/sherlok')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Executing sherlock - $target_p Aguarde =)"   
-		sherlock_result=$(sherlock $target)
+		/home/p0ssuidao/sherlock/sherlock.py $target_p | grep + > /tmp/sheklok.log
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "$sherlock_result"  
+					--text "\`\`\`$(cat /tmp/sheklok.log) \`\`\`" 		\
+                                        --parse_mode markdown
 		;;
 
-		"/sherlock "*)
+		"/sherlok "*)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Executing sherlock - $message_text Aguarde =)"   
 		sherlock_result=$(sherlock $message_text)
@@ -209,18 +218,47 @@ do
 		;;
 
 		'/comandos')
+		msgp="For *People* \n"
+		msgp+="/theharvester  -\n"
+		msgp+="/karma - \n"
+		msgp+="/pwnedornot - \n"
+		msgp+="/sherlok - \n"
+		msgi="For *Infrastructure* \n"
+		msgi+="/nmap   - \n"
+		msgi+="/shodan  - \n"
+		msgi+="/inurl  - \n"	
+		msgi+="/dorks  - \n"
+		msgi+="/whois  - \n"
+		msgt="To define your target \n"
+		msgt+="/set-target - \n"
+		msgt+="/show-target - \n"
+		msgs="Alsos *Shotcuts* \n"
+		msgs+="/btn-computer - \n"
+		msgs+="/btn-people - \n"
+		msgs+="/btn-all - \n"
+		msga="Set your args 4 commands \n"
+		msga+="/advanced \n"
+		msgc="Cleam confis \n"
+		msgc+="/cleam"
+
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
-					--text "$(echo -e /nmap   - \\n		\
-							  /kill   - \\n 	\
-							  /inurl  - \\n 	\
-							  /dorks  - \\n 	\
-							  /whois  - \\n 	\
-							  /theharvester  - \\n	\
-							  /botoes - \\n		\
-							  /botoes2 - \\n	\
-							  /set-target - \\n	\
-							  /show-target - \\n	\
-						)"
+					--text "$(echo -e $msgp)"		\
+					--parse_mode markdown
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
+					--text "$(echo -e $msgi)"		\
+					--parse_mode markdown
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
+					--text "$(echo -e $msgt)"		\
+					--parse_mode markdown
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
+					--text "$(echo -e $msgs)"		\
+					--parse_mode markdown
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
+					--text "$(echo -e $msga)"		\
+					--parse_mode markdown
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]}	\
+					--text "$(echo -e $msgc)"		\
+					--parse_mode markdown
 		;;
 
 		'/admin')
@@ -243,14 +281,14 @@ do
 					--parse_mode markdown
 		;;
 
-		'/btn_people')
+		'/btn-people')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Shortcuts for peoples" 		\
         				--reply_markup "$keyboard_people" 	\
 					--parse_mode markdown
 		;;
 
-		'/btn_computer')
+		'/btn-computer')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Shortcurts for computer" 	\
         				--reply_markup "$keyboard_computer" 	\
@@ -333,6 +371,12 @@ do
 		> $arg_nmap_dir		
 		;;
 
+		'/keyoff')
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
+					--text "Removed"				\
+					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
+					--parse_mode markdown
+		;; 
 		/*)	
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 				     	--text "Comando invalido ver em /comandos"
