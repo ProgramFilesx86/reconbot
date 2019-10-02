@@ -83,7 +83,8 @@ do
 		"/nmap "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Target - $message_text Aguarde =)"   
+		                        --parse_mode markdown			\
+					--text "Executing *NMAP* \\n Target = *$message_text* Wait =)"   
 		nmap_result=$(nmap $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$nmap_result"  
@@ -91,7 +92,8 @@ do
 
 		'/nmap')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing NMAP - Target $target Aguarde =)"   
+				        --parse_mode markdown			\
+					--text "Executing *NMAP* \\n Target = *$target* Wait =)"   
 		nmap_result=$(nmap $target)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$nmap_result"  
@@ -100,7 +102,8 @@ do
 		"/theharvester "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Target - $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *The Harvester* \\n Target = *$message_text* Wait =)"   
 		theharvester_result=$(theharvester -d $message_text -l 100 -b google)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$theharvester_result"  
@@ -108,7 +111,8 @@ do
 
 		'/theharvester')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Target - $target Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *The Harvester* \\n Target = *$target* Wait =)"   
 		theharvester_result=$(theharvester -d  $target -l 100 -b google)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$theharvester_result"  
@@ -126,7 +130,8 @@ do
 		"/whois "*) 
 		message_text=$(echo "$message_text" | awk '{print $2}') 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "WHOIS - $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Whois* \\n Target = *$message_text* Wait =)"   
 		whois_result=$(whois $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$whois_result"  
@@ -134,7 +139,8 @@ do
 
 		'/whois')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing WHOIS- Target $target Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Whois* \\n Target = *$target* Wait =)"   
 		whois_result=$(whois $target)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$whois_result"  
@@ -143,7 +149,8 @@ do
 		'/shodan')
 		shodan init $shodan_key
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing Shodan- $target Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Shodan* \\n Target = *$target* Wait =)"   
 		shodan_result=$(shodan host $target)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$shodan_result"  
@@ -152,7 +159,8 @@ do
 		"/shodan "*)
 		shodan init $shodan_key
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing Shodan $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Shodan* \\n Target = *$message_text* Wait =)"   
 		shodan_result=$(shodan host $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$shodan_result"  
@@ -160,7 +168,8 @@ do
 
 		'/karma')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing Karma - $target_p Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Karma* \\n Target = *$target_p* Wait =)"   
 		karma target $target_p > /tmp/karma.log
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "\`\`\`$(cat /tmp/karma.log) \\n \`\`\`" \
@@ -169,7 +178,8 @@ do
 
 		"/karma "*)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing Karma - $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Karma* \\n Target = *$message_text* Wait =)"   
 		karma_result=$(karma target $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$karma_result"  
@@ -177,7 +187,8 @@ do
 
 		'/sherlok')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing sherlock - $target_p Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Sherlok* \\n Target = *$target_p Wait =)"   
 		/home/p0ssuidao/sherlock/sherlock.py $target_p | grep + > /tmp/sheklok.log
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "\`\`\`$(cat /tmp/sheklok.log) \`\`\`" 		\
@@ -186,7 +197,8 @@ do
 
 		"/sherlok "*)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing sherlock - $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Sherlok* \\n Target = *$message_text* Wait =)"   
 		sherlock_result=$(sherlock $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$sherlock_result"  
@@ -194,7 +206,8 @@ do
 
 		'/pwnedornot')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing pwnedornot - $target_p Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Pwnedornot* \\n Target = *$target_p* Wait =)"   
 		pwnedornot_result=$(pwnedornot.py -e $target)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$pwnedornot_result"  
@@ -202,7 +215,8 @@ do
 
 		"/pwnedornot "*)	
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Executing pwnedornot - $message_text Aguarde =)"   
+					--parse_mode markdown			\
+					--text "Executing *Pwnedornot* \\n Target = *$message_text* Wait =)"   
 		pwnedornot_result=$(pwnedornot.py -e $message_text)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$pwnedornot_result"  
@@ -296,49 +310,51 @@ do
 		;;
 		'/advanced')
 		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
-					--text "Qual comando quer ?" 		\
+					--text "For what command  ?" 		\
 					--reply_markup "$(ShellBot.ForceReply)"
 		;;
 
 		'/set-target')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
-				     	--text "Qual target ?"			\
-					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_target')" \
+				     	--text "What target?"			\
+					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_target')" 
 		;;
 
 		'/show-infrastructure')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
-				     	--text "Target = $target"
+					--parse_mode markdown				\
+				     	--text "Target = *$target*"
 		;;
 
 		'/show-people')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
-				     	--text "Target = $target_p"
+					--parse_mode markdown				\
+				     	--text "Target = *$target_p*"
 		;;
 
 		*"People 👨‍💻"*)
 		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
-					--text 'PEOPLE - Qual email ou Username? ' \
+					--text 'PEOPLE - What email or Username?' \
 					--reply_markup "$(ShellBot.ForceReply)"
 		unset btn_target 
 		;;
 
 		*"Infrastructure 🖥"*)
 		ShellBot.sendMessage	--chat_id ${message_from_id[$id]}  	\
-					--text 'INFRASTRUCTURE - Qual IP ou dominio? ' \
+					--text 'INFRASTRUCTURE - What IP or domain?' \
 					--reply_markup "$(ShellBot.ForceReply)"
 		unset btn_target 
 		;;
 
 		'/cleam')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-				     	--text "OQ quer limpar?"		\
+				     	--text "What do you want to clean ?"		\
 					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_cleam')" 
 		;;
 
 		'Cleam Target - People')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-				     	--text "Target People limpo"		\
+				     	--text "Target People cleam"		\
 					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
 					--parse_mode markdown
 		> $target_dir_p
@@ -347,7 +363,7 @@ do
 
 		'Cleam Target - Infrastructure')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-				     	--text "Target Infrastructure limpo"		\
+				     	--text "Target Infrastructure cleam"		\
 					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
 					--parse_mode markdown
 		> $target_dir
@@ -365,7 +381,7 @@ do
 
 		'Cleam Args')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-				     	--text "Args limpos"			\
+				     	--text "Args cleam"			\
 					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
 					--parse_mode markdown
 		> $arg_nmap_dir		
@@ -379,7 +395,7 @@ do
 		;; 
 		/*)	
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
-				     	--text "Comando invalido ver em /comandos"
+				     	--text "Invalid commands try /commands"
 
 	esac
 
@@ -387,12 +403,12 @@ do
 		case $message_text in
 			"nmap"*)		
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
-						--text "Quais parametros para o NMAP" 	\
+						--text "What args to NMAP" 	\
 						--reply_markup "$(ShellBot.ForceReply)"
 			;;
 			'theharvester')
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
-						--text 'HARVESTER' 			\
+						--text 'What args to  HARVESTER' 			\
 						--reply_markup "$(ShellBot.ForceReply)"
 			;;
 		esac
@@ -408,7 +424,7 @@ do
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 						--text "Target = $message_text" 	\
 			;;
-			'PEOPLE - Qual email ou Username?')
+			'PEOPLE - What email or Username?')
 			echo $message_text > $target_dir_p
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 						--text "Target = $message_text" 	\
@@ -416,7 +432,7 @@ do
 						--parse_mode markdown
 			;;
 
-			'INFRASTRUCTURE - Qual IP ou dominio?') 
+			'INFRASTRUCTURE - What IP or domain?') 
 			echo $message_text > $target_dir
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 						--text "Target = $message_text" 	\
