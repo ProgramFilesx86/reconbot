@@ -17,7 +17,7 @@ btn_all='
 ["/set-targert","/nmap","/inurl"],
 ["/theharvester","/shodan","/whois"],
 ["karma","/sherlok","/pwnedornot"],
-["/dorks","/admin","/comandos","/show-target"]
+["/dorks","/admin","/commands","/show-target"]
 '
 
 btn_people='
@@ -217,7 +217,7 @@ do
 					--text "$dorks_result"  
 		;;
 
-		'/comandos')
+		'/commands')
 		msgp="For *People* \n"
 		msgp+="/theharvester  -\n"
 		msgp+="/karma - \n"
