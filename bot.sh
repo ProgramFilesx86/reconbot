@@ -23,21 +23,21 @@ btn_all='
 btn_people='
 ["/karma","/sherlok","/pwnedornot"]
 '
-btn_computer='
+btn_infrastructure='
 ["/nmap","/inurl","/theharvester"],
 ["/shodan","/whois"] 
 '
 
-btn_target='["People 👨‍💻","Computer 🖥"]'
+btn_target='["People 👨‍💻","Infrastructure 🖥"]'
 
 btn_cleam='
 ["Cleam Target - People"],
-["Cleam Target - Computer"],
+["Cleam Target - Infrastructure"],
 ["Cleam All","Cleam Args"]
 '
 
 keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'btn_all' --one_time_keyboard true)"
-keyboard_computer="$(ShellBot.ReplyKeyboardMarkup --button 'btn_computer' --one_time_keyboard true)"
+keyboard_infrastructure="$(ShellBot.ReplyKeyboardMarkup --button 'btn_nfrastructure' --one_time_keyboard true)"
 keyboard_people="$(ShellBot.ReplyKeyboardMarkup --button 'btn_people' --one_time_keyboard true)"
 
 while :
@@ -233,7 +233,7 @@ do
 		msgt+="/set-target - \n"
 		msgt+="/show-target - \n"
 		msgs="Alsos *Shotcuts* \n"
-		msgs+="/btn-computer - \n"
+		msgs+="/btn-infrastructure - \n"
 		msgs+="/btn-people - \n"
 		msgs+="/btn-all - \n"
 		msga="Set your args 4 commands \n"
@@ -288,10 +288,10 @@ do
 					--parse_mode markdown
 		;;
 
-		'/btn-computer')
+		'/btn-infrastructure')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-					--text "Shortcurts for computer" 	\
-        				--reply_markup "$keyboard_computer" 	\
+					--text "Shortcurts for Infrastructure" 	\
+        				--reply_markup "$keyboard_infrastructure" 	\
 					--parse_mode markdown
 		;;
 		'/advanced')
@@ -306,7 +306,7 @@ do
 					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_target')" \
 		;;
 
-		'/show-computer')
+		'/show-infrastructure')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 				     	--text "Target = $target"
 		;;
@@ -323,9 +323,9 @@ do
 		unset btn_target 
 		;;
 
-		*"Computer 🖥"*)
+		*"Infrastructure 🖥"*)
 		ShellBot.sendMessage	--chat_id ${message_from_id[$id]}  	\
-					--text 'COMPUTER - Qual IP ou dominio? ' \
+					--text 'INFRASTRUCTURE - Qual IP ou dominio? ' \
 					--reply_markup "$(ShellBot.ForceReply)"
 		unset btn_target 
 		;;
@@ -345,9 +345,9 @@ do
 
 		;;
 
-		'Cleam Target - Computer')
+		'Cleam Target - Infrastructure')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
-				     	--text "Target Computer limpo"		\
+				     	--text "Target Infrastructure limpo"		\
 					--reply_markup "$(ShellBot.ReplyKeyboardRemove)" \
 					--parse_mode markdown
 		> $target_dir
@@ -416,11 +416,11 @@ do
 						--parse_mode markdown
 			;;
 
-			'COMPUTER - Qual IP ou dominio?') 
+			'INFRASTRUCTURE - Qual IP ou dominio?') 
 			echo $message_text > $target_dir
 			ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
 						--text "Target = $message_text" 	\
-        					--reply_markup "$keyboard_computer" 	\
+        					--reply_markup "$keyboard_infrastructure" 	\
 						--parse_mode markdown
 			;;
 
