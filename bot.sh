@@ -37,7 +37,7 @@ btn_cleam='
 '
 
 keyboard="$(ShellBot.ReplyKeyboardMarkup --button 'btn_all' --one_time_keyboard true)"
-keyboard_infrastructure="$(ShellBot.ReplyKeyboardMarkup --button 'btn_nfrastructure' --one_time_keyboard true)"
+keyboard_infrastructure="$(ShellBot.ReplyKeyboardMarkup --button 'btn_infrastructure' --one_time_keyboard true)"
 keyboard_people="$(ShellBot.ReplyKeyboardMarkup --button 'btn_people' --one_time_keyboard true)"
 
 while :
@@ -63,6 +63,8 @@ do
        		 ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 		 			--text "$(echo -e $msg)"		\
 					--parse_mode markdown
+		 ShellBot.sendAnimation --chat_id ${message_from_id[$id]}	\
+			 		--animation CgADBAADZwEAAjChrFDUjQYY3y3knBYE
 		;;
 		
 		'/readme')
@@ -238,7 +240,7 @@ do
 		msgp+="/pwnedornot - \n"
 		msgp+="/sherlok - \n"
 		msgi="For *Infrastructure* \n"
-		msgi+="/nmap   - \n"
+		msgi+="/nmap  - Open-source network scanner \n"
 		msgi+="/shodan  - \n"
 		msgi+="/inurl  - \n"	
 		msgi+="/dorks  - \n"
