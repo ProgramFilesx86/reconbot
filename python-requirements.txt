@@ -2,7 +2,6 @@ pysocks
 texttable
 docopt
 requests
-torrequests
 stem
 soupsieve
 requests-futures
@@ -10,7 +9,6 @@ lxml
 colorama
 certifi
 bs4
-beatifulsoup4
 aiodns
 beautifulsoup4
 censys
@@ -23,4 +21,4 @@ plotly
 pytest
 PyYaml
 shodan
-
+torrequest

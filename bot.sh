@@ -16,8 +16,8 @@ unset btn_all
 btn_all='
 ["/set-targert","/nmap","/inurl"],
 ["/theharvester","/shodan","/whois"],
-["karma","/sherlok","/pwnedornot"],
-["/dorks","/admin","/commands","/show-target"]
+["/karma","/sherlok","/pwnedornot"],
+["/dorks","/admin","/commands","/showinfra","/showpeople"]
 '
 
 btn_people='
@@ -106,7 +106,7 @@ do
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
 					--text "Executing *The Harvester* \\n Target = *$message_text* Wait =)"   
-		theharvester_result=$(theharvester -d $message_text -l 100 -b google)
+		theharvester_result=$(theHarvester.py -d $message_text -l 50 -b google)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$theharvester_result"  
 		;;
@@ -115,7 +115,7 @@ do
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
 					--text "Executing *The Harvester* \\n Target = *$target* Wait =)"   
-		theharvester_result=$(theharvester -d  $target -l 100 -b google)
+		theharvester_result=$(theHarvester.py -d  $target -l 50 -b google)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$theharvester_result"  
 		;;
@@ -149,7 +149,10 @@ do
 		;;
 
 		'/shodan')
-		shodan init $shodan_key
+		if [ ! -f target_dir=/tmp/${message_from_id[$id]}/shodan.init ] ; then
+			shodan init $shodan_key
+			> /tmp/${message_from_id[$id]}/shodan.init
+		fi 
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
 					--text "Executing *Shodan* \\n Target = *$target* Wait =)"   
@@ -171,18 +174,25 @@ do
 		'/karma')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
-					--text "Executing *Karma* \\n Target = *$target_p* Wait =)"   
+					--text "Starting *TOR*" 
+		service tor start && sleep 15 
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--parse_mode markdown			\
+					--text "Executing *Karma* \\nTarget = *$target_p* Wait =)"   
 		karma target $target_p > /tmp/karma.log
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "\`\`\`$(cat /tmp/karma.log) \\n \`\`\`" \
                                         --parse_mode markdown
+		pkill tor && service tor stop
 		;;
 
 		"/karma "*)
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
-					--text "Executing *Karma* \\n Target = *$message_text* Wait =)"   
+					--text "Executing *Karma* \\n Target = *$message_text* Wait =)" 
+		service tor start
 		karma_result=$(karma target $message_text)
+		service tor stop
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "$karma_result"  
 		;;
@@ -190,9 +200,10 @@ do
 		'/sherlok')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--parse_mode markdown			\
-					--text "Executing *Sherlok* \\n Target = *$target_p Wait =)"   
-		/home/p0ssuidao/sherlock/sherlock.py $target_p | grep + > /tmp/sheklok.log
-		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
+					--text "Executing *Sherlok* \\nTarget = *$target_p* Wait =)"
+
+		sherlock $target_p | grep + > /tmp/sheklok.log
+		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 			\
 					--text "\`\`\`$(cat /tmp/sheklok.log) \`\`\`" 		\
                                         --parse_mode markdown
 		;;
@@ -246,12 +257,13 @@ do
 		msgi+="/dorks  - \n"
 		msgi+="/whois  - \n"
 		msgt="To define your target \n"
-		msgt+="/set-target - \n"
-		msgt+="/show-target - \n"
+		msgt+="/settarget - \n"
+		msgt+="/showinfra - \n"
+		msgt+="/showpeople - \n"
 		msgs="Alsos *Shotcuts* \n"
-		msgs+="/btn-infrastructure - \n"
-		msgs+="/btn-people - \n"
-		msgs+="/btn-all - \n"
+		msgs+="/btninfra - \n"
+		msgs+="/btnpeople - \n"
+		msgs+="/btnall - \n"
 		msga="Set your args 4 commands \n"
 		msga+="/advanced \n"
 		msgc="Cleam confis \n"
@@ -290,21 +302,21 @@ do
 		> log
 		;;
 
-		'/btn-all')
+		'/btnall')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "All shortcuts" 		\
         				--reply_markup "$keyboard" 		\
 					--parse_mode markdown
 		;;
 
-		'/btn-people')
+		'/btnpeople')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Shortcuts for peoples" 		\
         				--reply_markup "$keyboard_people" 	\
 					--parse_mode markdown
 		;;
 
-		'/btn-infrastructure')
+		'/btninfra')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 	\
 					--text "Shortcurts for Infrastructure" 	\
         				--reply_markup "$keyboard_infrastructure" 	\
@@ -316,19 +328,37 @@ do
 					--reply_markup "$(ShellBot.ForceReply)"
 		;;
 
-		'/set-target')
+		'/settarget')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 				     	--text "What target?"			\
 					--reply_markup "$(ShellBot.ReplyKeyboardMarkup --button 'btn_target')" 
 		;;
 
-		'/show-infrastructure')
+		"/setpeople "*)
+		message_text=$(echo "$message_text" | awk '{print $2}') 
+		echo $message_text > $target_dir_p
+		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
+					--text "Target = $message_text" 	\
+       					--reply_markup "$keyboard_people" 	\
+					--parse_mode markdown
+		;;
+
+		"/setinfra "*)
+		message_text=$(echo "$message_text" | awk '{print $2}') 
+		echo $message_text > $target_dir
+		ShellBot.sendMessage	--chat_id ${message_from_id[$id]} 	\
+					--text "Target = $message_text" 	\
+        				--reply_markup "$keyboard_infrastructure" \
+					--parse_mode markdown
+		;;
+
+		'/showinfra')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 					--parse_mode markdown				\
 				     	--text "Target = *$target*"
 		;;
 
-		'/show-people')
+		'/showpeople')
 		ShellBot.sendMessage 	--chat_id ${message_from_id[$id]} 		\
 					--parse_mode markdown				\
 				     	--text "Target = *$target_p*"

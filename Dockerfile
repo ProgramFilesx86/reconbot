@@ -10,13 +10,16 @@ RUN apt update && \
     python3-pip \
     git \
     tor \
-    nmap 
+    nmap \
+    curl \
+    jq \
+    procps
     
 #------------------------------------------------------------------
 # Python requirements
 #------------------------------------------------------------------
 
-COPY python-requirements.txt ShellBot.sh bot.sh dorks.list .
+COPY python-requirements.txt ShellBot.sh bot.sh dorks.list ./
 RUN pip3 install -r python-requirements.txt
 RUN pip3 install -U setuptools && easy_install shodan
 
@@ -53,4 +56,4 @@ RUN git clone https://github.com/laramies/theHarvester && \
     cd theHarvester && \
     ln -s $PWD/theHarvester.py /usr/bin/theHarvester.py
 
-ENTRYPOINT ["bot.sh"]
+ENTRYPOINT ["./bot.sh"]
